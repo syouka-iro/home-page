@@ -1,143 +1,470 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth scroll-pt-24">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon-v2.png" type="image/png">
-    <title>syouka_iro - プロフィール</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    <title>syouka_iro / しょうか いろ - プロフィールウェブサイト</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-main': '#f7eedf',
+                        'accent-orange': '#ffaa71',
+                        'accent-deep': '#e66b23',
+                        'brand-light': '#ffe7d6',
+                        'text-dark': '#333333',
+                        'text-muted': '#5a5a5a'
+                    },
+                    fontFamily: {
+                        sans: ['"Zen Maru Gothic"', '"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 10px 30px -5px rgba(230, 107, 35, 0.08), 0 4px 12px -2px rgba(0,0,0,0.03)',
+                        'card-hover': '0 20px 35px -10px rgba(230, 107, 35, 0.18), 0 8px 20px -4px rgba(0,0,0,0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
         body {
             background-color: #f7eedf;
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            color: #4a4a4a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        .profile-card {
-            background-color: #ffffff;
-            width: 100%;
-            max-width: 680px;
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .profile-img {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #ffe7d6;
-            margin-bottom: 16px;
-            transition: transform 0.3s ease;
-        }
-
-        .profile-img:hover {
-            transform: scale(1.1);
-        }
-
-        h1 {
-            font-size: 1.8rem;
             color: #333333;
-            letter-spacing: 0.05em;
         }
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+        .glass-nav {
+            background: rgba(247, 238, 223, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
-        .info-box {
-            background-color: #fafafa;
-            border-left: 4px solid #ffaa71;
-            padding: 14px 18px;
-            border-radius: 0 8px 8px 0;
-            font-size: 0.95rem;
-            font-weight: normal;
-            line-height: 1.6;
-            color: gly;
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        a {
-            color: #e66b23;
-            text-decoration: none;
-            font-weight: bold;
-            transition: opacity 0.2s;
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        a:hover {
-            opacity: 0.7;
-            text-decoration: underline;
+        .orange-gradient-text {
+            background: linear-gradient(135deg, #e66b23 0%, #ffaa71 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .footer {
-            margin-top: 35px;
-            padding-top: 15px;
-            border-top: 1px solid #eeeeee;
-            text-align: right;
-            font-size: 0.8rem;
-            color: #888888;
+        .orange-gradient-bg {
+            background: linear-gradient(135deg, #e66b23 0%, #ffaa71 100%);
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(255, 170, 113, 0.35) 0%, rgba(247, 238, 223, 0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
         }
     </style>
 </head>
-<body>
+<body class="font-sans antialiased selection:bg-accent-orange selection:text-white">
 
-    <div class="profile-card">
-        <div class="header">
-            <img src="https://yt3.googleusercontent.com/kTHzqCkIH1zjf53wdph4JK3wSLUOCVCh1-ZH2WzyEozoAo7_EMGsNhAMimmybRrQxM94qiTYGA=s160-c-k-c0x00ffffff-no-rj" alt="syouka_iro プロフィール画像" class="profile-img">
-            <h1>syouka_iro / しょうか いろ</h1>
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 w-full z-50 glass-nav border-b border-orange-200/40 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo / Avatar -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <img src="https://yt3.googleusercontent.com/kTHzqCkIH1zjf53wdph4JK3wSLUOCVCh1-ZH2WzyEozoAo7_EMGsNhAMimmybRrQxM94qiTYGA=s160-c-k-c0x00ffffff-no-rj" 
+                         alt="syouka_iro" 
+                         class="w-10 h-10 rounded-full border-2 border-accent-orange group-hover:scale-105 transition-transform duration-300 shadow-sm"
+                         onerror="this.src='https://placehold.co/100x100/ffe7d6/e66b23?text=SI'">
+                    <span class="font-extrabold text-xl tracking-tight text-text-dark group-hover:text-accent-deep transition-colors">
+                        syouka_iro
+                    </span>
+                </a>
+
+                <!-- Desktop Nav Navigation -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-bold text-text-muted">
+                    <a href="#stats" class="hover:text-accent-deep transition-colors">数字で見るsyouka_iro</a>
+                    <a href="#about" class="hover:text-accent-deep transition-colors">プロフィール</a>
+                    <a href="#activities" class="hover:text-accent-deep transition-colors">主な活動</a>
+                    <a href="#works" class="hover:text-accent-deep transition-colors">注目作品</a>
+                    <a href="#question" class="hover:text-accent-deep transition-colors">質問募集中！</a>
+                    <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" 
+                       class="orange-gradient-bg text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:opacity-95 transition-all duration-300 flex items-center gap-2">
+                        <i class="fa-brands fa-youtube"></i> YouTube
+                    </a>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <button id="menu-btn" class="md:hidden text-text-dark focus:outline-none p-2" aria-label="Toggle menu">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
         </div>
 
-        <div class="content">
-            <div class="info-box">
-                syouka_iro（しょうか いろ）は日本の<a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener noreferrer">YouTuber</a>及び<a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener noreferrer">Scratcher</a>。
-            </div>
-
-            <div class="info-box">
-                誕生日は5月18日。年齢は非公開だが本人曰く中学生らしい。男性（推定）。
-            </div>
-
-            <div class="info-box">
-                YouTubeでは、Scratchの技術解説や音楽系の動画をあげている。また、Scratchでは主にゲームを作っている。
-            </div>
-
-            <div class="info-box">
-                YouTubeチャンネルの登録者数は 73人、Scratchのフォロワーは 130人。（2026年9月5日現在）
-            </div>
-
-            <div class="info-box">
-                YouTubeチャンネルは2026年1月25日に登録、同年2月ごろに初投稿。
-            </div>
-
-            <div class="info-box">
-                Scratchアカウントは2025年3月ごろに登録（推定）、初投稿 同年3月9日。
-            </div>
-
-            <div class="info-box">
-                これまでで一番再生回数の多いYouTube横動画は「<a href="https://youtu.be/iEA_32ceYI4?si=GFwoOR-XjOQFN1G-" target="_blank" rel="noopener noreferrer">暑すぎて滅！【替え歌】M!LK/好きすぎて滅！</a>」
+        <!-- Mobile Dropdown Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-b border-orange-100 px-6 py-6 space-y-4 shadow-lg">
+            <a href="#stats" class="block font-bold text-text-muted hover:text-accent-deep">数字で見るsyouka_iro</a>
+            <a href="#about" class="block font-bold text-text-muted hover:text-accent-deep">プロフィール</a>
+            <a href="#activities" class="block font-bold text-text-muted hover:text-accent-deep">主な活動</a>
+            <a href="#works" class="block font-bold text-text-muted hover:text-accent-deep">注目作品</a>
+            <a href="#question" class="block font-bold text-text-muted hover:text-accent-deep">質問募集中</a>
+            <div class="pt-2 flex gap-3">
+                <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" class="flex-1 text-center orange-gradient-bg text-white py-2.5 rounded-full font-bold">
+                    <i class="fa-brands fa-youtube"></i> YouTube
+                </a>
+                <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" class="flex-1 text-center bg-amber-500 text-white py-2.5 rounded-full font-bold">
+                    <i class="fa-solid fa-cat"></i> Scratch
+                </a>
             </div>
         </div>
+    </header>
 
-        <div class="footer">
-            最終更新日 2026年 9月5日
+    <main class="pt-24">
+        <!-- Hero Section -->
+        <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden px-4 py-16">
+            <div class="hero-glow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+            
+            <div class="max-w-4xl mx-auto text-center relative z-10 reveal-element">
+                <!-- Profile Image Badge -->
+                <div class="relative inline-block mb-8">
+                    <div class="absolute -inset-2 orange-gradient-bg rounded-full blur-md opacity-40 animate-pulse"></div>
+                    <img src="https://yt3.googleusercontent.com/kTHzqCkIH1zjf53wdph4JK3wSLUOCVCh1-ZH2WzyEozoAo7_EMGsNhAMimmybRrQxM94qiTYGA=s160-c-k-c0x00ffffff-no-rj" 
+                         alt="syouka_iro Profile" 
+                         class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full border-4 border-white shadow-2xl object-cover hover:rotate-3 transition-transform duration-500"
+                         onerror="this.src='https://placehold.co/200x200/ffe7d6/e66b23?text=syouka_iro'">
+                    <span class="absolute bottom-1 right-1 bg-white text-accent-deep px-3 py-1 rounded-full text-xs font-black shadow-md border border-orange-100 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Active
+                    </span>
+                </div>
+
+                <!-- Titles -->
+                <div class="inline-block px-4 py-1.5 rounded-full bg-orange-100/80 text-accent-deep text-xs sm:text-sm font-black tracking-widest uppercase mb-4 border border-orange-200">
+                    プロフィールサイト
+                </div>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-text-dark tracking-tight mb-4">
+                    syouka_iro <span class="text-2xl sm:text-4xl font-normal text-text-muted block sm:inline mt-1 sm:mt-0">/ しょうか いろ</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-text-muted max-w-2xl mx-auto font-medium leading-relaxed mb-10">
+                    YouTubeとScratchを中心に技術解説、オリジナルゲーム、音楽動画を発信する中学生クリエイター。
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" 
+                       class="orange-gradient-bg text-white font-bold px-8 py-4 rounded-2xl shadow-lg hover:shadow-orange-500/25 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 text-base">
+                        <i class="fa-brands fa-youtube text-xl"></i>
+                        <span>YouTube チャンネル</span>
+                    </a>
+                    <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" 
+                       class="bg-white text-text-dark font-bold px-8 py-4 rounded-2xl shadow-md border border-orange-200/70 hover:border-accent-orange hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 text-base">
+                        <i class="fa-solid fa-cat text-amber-500 text-xl"></i>
+                        <span>Scratch プロフィール</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section id="stats" class="py-12 px-4 max-w-5xl mx-auto">
+            <div class="text-center mb-12 reveal-element">
+                <h2 class="text-3xl font-black text-text-dark mb-3">数字で見るsyouka_iro</h2>
+                <div class="w-12 h-1.5 orange-gradient-bg mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Stat Card 1 -->
+                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 flex items-center gap-6 hover:shadow-card-hover transition-all duration-300">
+                    <div class="w-16 h-16 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center text-3xl shrink-0">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold tracking-wider text-text-muted uppercase mb-1">YouTube Subscribers</div>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-4xl font-black text-text-dark orange-gradient-text">73</span>
+                            <span class="text-sm font-bold text-text-muted">人</span>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">2026年9月5日 現在</div>
+                    </div>
+                </div>
+
+                <!-- Stat Card 2 -->
+                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 flex items-center gap-6 hover:shadow-card-hover transition-all duration-300">
+                    <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-3xl shrink-0">
+                        <i class="fa-solid fa-cat"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold tracking-wider text-text-muted uppercase mb-1">Scratch Followers</div>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-4xl font-black text-text-dark orange-gradient-text">130</span>
+                            <span class="text-sm font-bold text-text-muted">人</span>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">2026年9月5日 現在</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-16 px-4 max-w-5xl mx-auto">
+            <div class="text-center mb-12 reveal-element">
+                <h2 class="text-3xl font-black text-text-dark mb-3">プロフィール・経歴</h2>
+                <div class="w-12 h-1.5 orange-gradient-bg mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Info Grid -->
+                <div class="lg:col-span-2 reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 space-y-6">
+                    <h3 class="text-xl font-bold text-text-dark border-b border-gray-100 pb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-user-gear text-accent-deep"></i> 基本情報
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
+                            <span class="text-xs font-bold text-accent-deep block mb-1">名前</span>
+                            <span class="font-bold text-text-dark">syouka_iro（しょうか いろ）</span>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
+                            <span class="text-xs font-bold text-accent-deep block mb-1">誕生日</span>
+                            <span class="font-bold text-text-dark">5月18日</span>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
+                            <span class="text-xs font-bold text-accent-deep block mb-1">属性</span>
+                            <span class="font-bold text-text-dark">中学生クリエイター（推定男性）</span>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
+                            <span class="text-xs font-bold text-accent-deep block mb-1">拠点</span>
+                            <span class="font-bold text-text-dark">日本</span>
+                        </div>
+                    </div>
+
+                    <p class="text-text-muted leading-relaxed text-sm sm:text-base pt-2">
+                        YouTubeとScratchをメインに、プログラミング技術やエンターテインメント表現を追求中。独創的なクリエイティブ活動を展開しています。
+                    </p>
+                </div>
+
+                <!-- History Timeline -->
+                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 flex flex-col justify-between">
+                    <h3 class="text-xl font-bold text-text-dark border-b border-gray-100 pb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-clock-rotate-left text-accent-deep"></i> タイムライン
+                    </h3>
+
+                    <div class="space-y-6 my-6 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-orange-100">
+                        <!-- History Item 1 -->
+                        <div class="relative pl-8">
+                            <div class="absolute left-2 top-1.5 w-3 h-3 rounded-full orange-gradient-bg ring-4 ring-white"></div>
+                            <span class="text-xs font-extrabold text-accent-deep">2025年 3月</span>
+                            <p class="text-sm font-bold text-text-dark mt-0.5">Scratchアカウント開設</p>
+                            <p class="text-xs text-text-muted mt-1">同年3月9日に初作品投稿。</p>
+                        </div>
+
+                        <!-- History Item 2 -->
+                        <div class="relative pl-8">
+                            <div class="absolute left-2 top-1.5 w-3 h-3 rounded-full orange-gradient-bg ring-4 ring-white"></div>
+                            <span class="text-xs font-extrabold text-accent-deep">2026年 1月25日</span>
+                            <p class="text-sm font-bold text-text-dark mt-0.5">YouTubeチャンネル開設</p>
+                            <p class="text-xs text-text-muted mt-1">同年2月に動画初投稿。</p>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-brand-light/60 rounded-2xl text-center text-xs font-bold text-accent-deep">
+                    積極的に作品・動画を投稿中！
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activities Section -->
+        <section id="activities" class="py-16 px-4 max-w-5xl mx-auto">
+            <div class="text-center mb-12 reveal-element">
+                <h2 class="text-3xl font-black text-text-dark mb-3">主な活動</h2>
+                <div class="w-12 h-1.5 orange-gradient-bg mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Activity 1 -->
+                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-accent-deep flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-text-dark mb-3">Scratch 技術解説</h3>
+                    <p class="text-text-muted text-sm leading-relaxed">
+                        YouTubeにて、Scratchを使ったプログラミング技法やアルゴリズムの解説動画を制作・投稿しています。
+                    </p>
+                </div>
+
+                <!-- Activity 2 -->
+                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-accent-deep flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-text-dark mb-3">ゲーム開発</h3>
+                    <p class="text-text-muted text-sm leading-relaxed">
+                        Scratchプラットフォームを中心に、アイデア溢れる様々なオリジナルゲームを制作し公開しています。
+                    </p>
+                </div>
+
+                <!-- Activity 3 -->
+                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-accent-deep flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-text-dark mb-3">音楽 & 替え歌動画</h3>
+                    <p class="text-text-muted text-sm leading-relaxed">
+                        音楽系の企画や人気の話題を取り入れたオリジナル替え歌動画など、エンタメ作品も手掛けています。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pick Up Work Section -->
+        <section id="works" class="py-16 px-4 max-w-5xl mx-auto">
+            <div class="text-center mb-12 reveal-element">
+                <h2 class="text-3xl font-black text-text-dark mb-3">注目の作品</h2>
+                <p class="text-text-muted text-sm font-bold">最高再生数を誇る人気コンテンツ</p>
+                <div class="w-12 h-1.5 orange-gradient-bg mx-auto rounded-full mt-3"></div>
+            </div>
+
+            <!-- Featured Card -->
+            <div class="reveal-element bg-white rounded-3xl overflow-hidden shadow-card border border-orange-100/60 grid grid-cols-1 md:grid-cols-12 gap-0 hover:shadow-card-hover transition-all duration-300">
+                <div class="md:col-span-7 bg-amber-900/10 p-8 flex flex-col justify-between relative overflow-hidden min-h-[260px]">
+                    <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('https://img.youtube.com/vi/iEA_32ceYI4/maxresdefault.jpg');"></div>
+                    <div class="relative z-10">
+                        <span class="inline-block bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full mb-4 shadow">
+                            <i class="fa-brands fa-youtube"></i> Most Played Video
+                        </span>
+                        <h3 class="text-2xl sm:text-3xl font-black text-text-dark leading-tight mb-3">
+                            暑すぎて滅！【替え歌】M!LK/好きすぎて滅！
+                        </h3>
+                    </div>
+                    <div class="relative z-10 mt-6">
+                        <a href="https://youtu.be/iEA_32ceYI4?si=GFwoOR-XjOQFN1G-" target="_blank" rel="noopener" 
+                           class="inline-flex items-center gap-3 orange-gradient-bg text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:opacity-95 transition-all">
+                            <i class="fa-solid fa-play"></i> YouTubeで再生する
+                        </a>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 p-8 flex flex-col justify-center bg-white">
+                    <h4 class="text-xs font-extrabold text-accent-deep tracking-wider uppercase mb-2">概要</h4>
+                    <p class="text-text-muted text-sm leading-relaxed mb-6">
+                        syouka_iroのYouTubeチャンネルで**最も再生されている人気横動画**。コミカルでテンポの良い替え歌表現が話題のヒットコンテンツです！
+                    </p>
+                    <div class="flex items-center gap-4 text-xs font-bold text-gray-500 border-t border-gray-100 pt-4">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-video text-accent-orange"></i> 横動画</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-thumbs-up text-accent-orange"></i> 大好評配信中</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- マシュマロ（匿名質問）セクション -->
+<section id="question" class="py-12 reveal-element">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-card border border-orange-100 text-center relative overflow-hidden">
+            <!-- 装飾アイコン背景 -->
+            <div class="absolute -right-6 -bottom-6 text-accent-orange/10 text-8xl pointer-events-none">
+                <i class="fa-solid fa-comment-dots"></i>
+            </div>
+
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-light text-accent-deep mb-4">
+                <i class="fa-solid fa-paper-plane text-xl"></i>
+            </div>
+            
+            <h2 class="text-xl sm:text-2xl font-bold text-text-dark mb-2">
+                匿名質問募集中！
+            </h2>
+            <p class="text-sm sm:text-base text-text-muted mb-6 max-w-lg mx-auto">
+                YouTubeやScratchについての質問、動画の感想やメッセージなど、マシュマロで気軽に送ってください！
+            </p>
+
+            <a href="https://marshmallow-qa.com/1vunyq8xouv5ncu?t=ry9NII&utm_medium=url_text&utm_source=promotion" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full orange-gradient-bg text-white font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+                <i class="fa-solid fa-heart"></i>
+                <span>マシュマロで質問を送る</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
+            </a>
         </div>
     </div>
+</section>
 
+    <!-- Footer -->
+    <footer class="bg-white border-t border-orange-100 py-12 mt-20">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <div class="flex justify-center gap-6 mb-6">
+                <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-orange-50 text-accent-deep hover:orange-gradient-bg hover:text-white flex items-center justify-center text-xl transition-all duration-300">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-orange-50 text-accent-deep hover:orange-gradient-bg hover:text-white flex items-center justify-center text-xl transition-all duration-300">
+                    <i class="fa-solid fa-cat"></i>
+                </a>
+            </div>
+
+            <p class="text-xs text-text-muted font-bold mb-2">
+                最終更新日: 2026年 9月5日
+            </p>
+            <p class="text-xs text-gray-400">
+                &copy; 2026 syouka_iro. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Intersection Observer for Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-element').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
