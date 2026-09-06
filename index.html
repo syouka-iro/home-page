@@ -63,7 +63,6 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* ダークモード時の基本スタイル設定 */
         html.dark body {
             background-color: #121110;
             color: #f3f3f3;
@@ -122,7 +121,6 @@
             background: radial-gradient(circle, rgba(230, 107, 35, 0.25) 0%, rgba(18, 17, 16, 0) 70%);
         }
 
-        /* ダークモード用コンポーネントクラス */
         html.dark .theme-card {
             background-color: #1c1a17 !important;
             border-color: rgba(230, 107, 35, 0.15) !important;
@@ -148,7 +146,7 @@
         }
     </style>
 
-    <!-- 初期表示時のチラつき防止スクリプト -->
+    <!-- 初期表示時のチラつき防止 -->
     <script>
         if (localStorage.theme === 'dark') {
             document.documentElement.classList.add('dark');
@@ -184,18 +182,18 @@
                         <i class="fa-brands fa-youtube"></i> YouTube
                     </a>
 
-                    <!-- ダークモード切り替えボタン (PC) -->
+                    <!-- ダークモードpc-->
                     <button id="theme-toggle" class="p-2.5 rounded-full bg-orange-100/80 dark:bg-zinc-800 text-accent-deep dark:text-amber-400 hover:scale-110 transition-all duration-300 focus:outline-none" aria-label="テーマ切り替え">
                         <i id="theme-toggle-dark-icon" class="fa-solid fa-moon text-lg hidden"></i>
                         <i id="theme-toggle-light-icon" class="fa-solid fa-sun text-lg hidden"></i>
                     </button>
                 </nav>
 
-                <div class="flex items-center gap-2 md:hidden">
-                    <!-- ダークモード切り替えボタン (スマホ) -->
-                    <button id="theme-toggle-mobile" class="p-2 rounded-full bg-orange-100/80 dark:bg-zinc-800 text-accent-deep dark:text-amber-400 focus:outline-none" aria-label="テーマ切り替え">
-                        <i id="theme-toggle-dark-icon-mobile" class="fa-solid fa-moon text-xl hidden"></i>
-                        <i id="theme-toggle-light-icon-mobile" class="fa-solid fa-sun text-xl hidden"></i>
+                <div class="flex items-center gap-3 md:hidden">
+                    <!-- ダークモードスマホ -->
+                    <button id="theme-toggle-mobile" class="w-10 h-10 rounded-full bg-orange-100/80 dark:bg-zinc-800 text-accent-deep dark:text-amber-400 flex items-center justify-center focus:outline-none active:scale-95 transition-transform" aria-label="テーマ切り替え">
+                        <i id="theme-toggle-dark-icon-mobile" class="fa-solid fa-moon text-lg hidden"></i>
+                        <i id="theme-toggle-light-icon-mobile" class="fa-solid fa-sun text-lg hidden"></i>
                     </button>
 
                     <button id="menu-btn" class="text-text-dark theme-text-dark focus:outline-none p-2" aria-label="Toggle menu">
@@ -205,18 +203,24 @@
             </div>
         </div>
 
+        <!-- モバイルメニュー -->
         <div id="mobile-menu" class="hidden md:hidden bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-b border-orange-100 dark:border-zinc-800 px-6 py-6 space-y-4 shadow-lg">
             <a href="#stats" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">数字で見るsyouka_iro</a>
             <a href="#about" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">プロフィール</a>
             <a href="#activities" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">主な活動</a>
             <a href="#works" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">注目作品</a>
             <a href="#question" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">質問募集中</a>
-            <div class="pt-2 flex gap-3">
-                <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" class="flex-1 text-center orange-gradient-bg text-white py-2.5 rounded-full font-bold">
-                    <i class="fa-brands fa-youtube"></i> YouTube
+            
+            <div class="pt-3 border-t border-orange-100 dark:border-zinc-800/80 grid grid-cols-2 gap-3">
+                <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" 
+                   class="orange-gradient-bg text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-transform text-sm">
+                    <i class="fa-brands fa-youtube text-lg shrink-0"></i>
+                    <span>YouTube</span>
                 </a>
-                <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" class="flex-1 text-center bg-amber-500 text-white py-2.5 rounded-full font-bold">
-                    <img src="./scratch-logo.png" alt="Scratch Icon" class="w-5 h-5 rounded-sm object-contain inline-block"> Scratch
+                <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" 
+                   class="bg-amber-500 text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-transform text-sm">
+                    <img src="./scratch-logo.png" alt="Scratch Icon" class="w-5 h-5 rounded-sm object-contain shrink-0">
+                    <span>Scratch</span>
                 </a>
             </div>
         </div>
@@ -496,7 +500,6 @@
     </footer>
 
     <script>
-        // --- ダークモード ---
         const themeToggleBtn = document.getElementById('theme-toggle');
         const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
         const darkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -505,16 +508,27 @@
         const lightIconMobile = document.getElementById('theme-toggle-light-icon-mobile');
 
         function updateIcons() {
-            if (document.documentElement.classList.contains('dark')) {
-                lightIcon.classList.remove('hidden');
-                darkIcon.classList.add('hidden');
-                lightIconMobile.classList.remove('hidden');
-                darkIconMobile.classList.add('hidden');
-            } else {
-                darkIcon.classList.remove('hidden');
-                lightIcon.classList.add('hidden');
-                darkIconMobile.classList.remove('hidden');
-                lightIconMobile.classList.add('hidden');
+            const isDark = document.documentElement.classList.contains('dark');
+            
+        
+            if (darkIcon && lightIcon) {
+                if (isDark) {
+                    darkIcon.classList.add('hidden');
+                    lightIcon.classList.remove('hidden');
+                } else {
+                    darkIcon.classList.remove('hidden');
+                    lightIcon.classList.add('hidden');
+                }
+            }
+
+            if (darkIconMobile && lightIconMobile) {
+                if (isDark) {
+                    darkIconMobile.classList.add('hidden');
+                    lightIconMobile.classList.remove('hidden');
+                } else {
+                    darkIconMobile.classList.remove('hidden');
+                    lightIconMobile.classList.add('hidden');
+                }
             }
         }
 
@@ -529,23 +543,34 @@
             updateIcons();
         }
 
-        themeToggleBtn.addEventListener('click', toggleTheme);
-        themeToggleMobileBtn.addEventListener('click', toggleTheme);
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', toggleTheme);
+        }
+        
+        if (themeToggleMobileBtn) {
+            themeToggleMobileBtn.addEventListener('click', toggleTheme);
+        }
+
+       
         updateIcons();
 
+        
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
             });
-        });
 
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
+
+        
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
