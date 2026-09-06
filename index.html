@@ -33,6 +33,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -59,17 +60,30 @@
         body {
             background-color: #f7eedf;
             color: #333333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ダークモード時の基本スタイル設定 */
+        html.dark body {
+            background-color: #121110;
+            color: #f3f3f3;
         }
         
         section, 
         div[id] {
-        scroll-margin-top: 42px;
+            scroll-margin-top: 42px;
         }
         
         .glass-nav {
             background: rgba(247, 238, 223, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        html.dark .glass-nav {
+            background: rgba(20, 18, 16, 0.85);
+            border-color: rgba(230, 107, 35, 0.2);
         }
 
         .reveal-element {
@@ -101,12 +115,50 @@
             border-radius: 50%;
             z-index: 0;
             pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        html.dark .hero-glow {
+            background: radial-gradient(circle, rgba(230, 107, 35, 0.25) 0%, rgba(18, 17, 16, 0) 70%);
+        }
+
+        /* ダークモード用コンポーネントクラス */
+        html.dark .theme-card {
+            background-color: #1c1a17 !important;
+            border-color: rgba(230, 107, 35, 0.15) !important;
+            color: #f3f3f3 !important;
+        }
+
+        html.dark .theme-card-sub {
+            background-color: #26231f !important;
+            border-color: rgba(230, 107, 35, 0.2) !important;
+        }
+
+        html.dark .theme-text-dark {
+            color: #ffffff !important;
+        }
+
+        html.dark .theme-text-muted {
+            color: #a3a09b !important;
+        }
+
+        html.dark .theme-footer {
+            background-color: #171513 !important;
+            border-color: rgba(230, 107, 35, 0.15) !important;
         }
     </style>
+
+    <!-- 初期表示時のチラつき防止スクリプト -->
+    <script>
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 <body class="font-sans antialiased selection:bg-accent-orange selection:text-white">
 
-   
     <header class="fixed top-0 left-0 w-full z-50 glass-nav border-b border-orange-200/40 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-24">
@@ -116,13 +168,12 @@
                          alt="syouka_iro" 
                          class="w-14 h-14 rounded-full border-2 border-accent-orange group-hover:scale-105 transition-transform duration-300 shadow-sm"
                          onerror="this.src='https://placehold.co/100x100/ffe7d6/e66b23?text=SI'">
-                    <span class="font-extrabold text-3xl tracking-tight text-text-dark group-hover:text-accent-deep transition-colors">
+                    <span class="font-extrabold text-3xl tracking-tight text-text-dark theme-text-dark group-hover:text-accent-deep transition-colors">
                         syouka_iro
                     </span>
                 </a>
 
-            
-                <nav class="hidden md:flex items-center gap-8 text-sm font-bold text-text-muted ">
+                <nav class="hidden md:flex items-center gap-6 text-sm font-bold text-text-muted theme-text-muted">
                     <a href="#stats" class="hover:text-accent-deep transition-colors text-base">数字で見るsyouka_iro</a>
                     <a href="#about" class="hover:text-accent-deep transition-colors text-base">プロフィール</a>
                     <a href="#activities" class="hover:text-accent-deep transition-colors text-base">主な活動</a>
@@ -132,28 +183,40 @@
                        class="orange-gradient-bg text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:opacity-95 transition-all duration-300 flex items-center gap-2 text-base">
                         <i class="fa-brands fa-youtube"></i> YouTube
                     </a>
+
+                    <!-- ダークモード切り替えボタン (PC) -->
+                    <button id="theme-toggle" class="p-2.5 rounded-full bg-orange-100/80 dark:bg-zinc-800 text-accent-deep dark:text-amber-400 hover:scale-110 transition-all duration-300 focus:outline-none" aria-label="テーマ切り替え">
+                        <i id="theme-toggle-dark-icon" class="fa-solid fa-moon text-lg hidden"></i>
+                        <i id="theme-toggle-light-icon" class="fa-solid fa-sun text-lg hidden"></i>
+                    </button>
                 </nav>
 
-            
-                <button id="menu-btn" class="md:hidden text-text-dark focus:outline-none p-2" aria-label="Toggle menu">
-                    <i class="fa-solid fa-bars text-2xl"></i>
-                </button>
+                <div class="flex items-center gap-2 md:hidden">
+                    <!-- ダークモード切り替えボタン (スマホ) -->
+                    <button id="theme-toggle-mobile" class="p-2 rounded-full bg-orange-100/80 dark:bg-zinc-800 text-accent-deep dark:text-amber-400 focus:outline-none" aria-label="テーマ切り替え">
+                        <i id="theme-toggle-dark-icon-mobile" class="fa-solid fa-moon text-xl hidden"></i>
+                        <i id="theme-toggle-light-icon-mobile" class="fa-solid fa-sun text-xl hidden"></i>
+                    </button>
+
+                    <button id="menu-btn" class="text-text-dark theme-text-dark focus:outline-none p-2" aria-label="Toggle menu">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-      
-        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-b border-orange-100 px-6 py-6 space-y-4 shadow-lg">
-            <a href="#stats" class="block font-bold text-text-muted hover:text-accent-deep">数字で見るsyouka_iro</a>
-            <a href="#about" class="block font-bold text-text-muted hover:text-accent-deep">プロフィール</a>
-            <a href="#activities" class="block font-bold text-text-muted hover:text-accent-deep">主な活動</a>
-            <a href="#works" class="block font-bold text-text-muted hover:text-accent-deep">注目作品</a>
-            <a href="#question" class="block font-bold text-text-muted hover:text-accent-deep">質問募集中</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-b border-orange-100 dark:border-zinc-800 px-6 py-6 space-y-4 shadow-lg">
+            <a href="#stats" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">数字で見るsyouka_iro</a>
+            <a href="#about" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">プロフィール</a>
+            <a href="#activities" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">主な活動</a>
+            <a href="#works" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">注目作品</a>
+            <a href="#question" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">質問募集中</a>
             <div class="pt-2 flex gap-3">
                 <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" class="flex-1 text-center orange-gradient-bg text-white py-2.5 rounded-full font-bold">
                     <i class="fa-brands fa-youtube"></i> YouTube
                 </a>
                 <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" class="flex-1 text-center bg-amber-500 text-white py-2.5 rounded-full font-bold">
-                    <img src="./scratch-logo.png" alt="Scratch Icon" class="w-5 h-5 rounded-sm object-contain"> Scratch
+                    <img src="./scratch-logo.png" alt="Scratch Icon" class="w-5 h-5 rounded-sm object-contain inline-block"> Scratch
                 </a>
             </div>
         </div>
@@ -167,25 +230,23 @@
                     <div class="absolute -inset-2 orange-gradient-bg rounded-full blur-md opacity-40 animate-pulse"></div>
                     <img src="https://yt3.googleusercontent.com/kTHzqCkIH1zjf53wdph4JK3wSLUOCVCh1-ZH2WzyEozoAo7_EMGsNhAMimmybRrQxM94qiTYGA=s160-c-k-c0x00ffffff-no-rj" 
                          alt="syouka_iro Profile" 
-                         class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full border-4 border-white shadow-2xl object-cover hover:rotate-3 transition-transform duration-500"
+                         class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full border-4 border-white dark:border-zinc-800 shadow-2xl object-cover hover:rotate-3 transition-transform duration-500"
                          onerror="this.src='https://placehold.co/200x200/ffe7d6/e66b23?text=syouka_iro'">
-                    <span class="absolute bottom-1 right-1 bg-white text-accent-deep px-3 py-1 rounded-full text-xs font-black shadow-md border border-orange-100 flex items-center gap-1">
+                    <span class="absolute bottom-1 right-1 bg-white dark:bg-zinc-900 text-accent-deep dark:text-amber-400 px-3 py-1 rounded-full text-xs font-black shadow-md border border-orange-100 dark:border-zinc-700 flex items-center gap-1">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Active
                     </span>
                 </div>
 
-           
-                <div class="inline-block px-4 py-1.5 rounded-full bg-orange-100/80 text-accent-deep text-xs sm:text-sm font-black tracking-widest uppercase mb-4 border border-orange-200">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-orange-100/80 dark:bg-orange-950/50 text-accent-deep dark:text-accent-orange text-xs sm:text-sm font-black tracking-widest uppercase mb-4 border border-orange-200 dark:border-orange-900">
                     プロフィールサイト
                 </div>
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-text-dark tracking-tight mb-4">
-                    syouka_iro <span class="text-2xl sm:text-4xl font-normal text-text-muted block sm:inline mt-1 sm:mt-0">/ しょうか いろ</span>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-text-dark theme-text-dark tracking-tight mb-4">
+                    syouka_iro <span class="text-2xl sm:text-4xl font-normal text-text-muted theme-text-muted block sm:inline mt-1 sm:mt-0">/ しょうか いろ</span>
                 </h1>
-                <p class="text-lg sm:text-xl text-text-muted max-w-2xl mx-auto font-medium leading-relaxed mb-10">
+                <p class="text-lg sm:text-xl text-text-muted theme-text-muted max-w-2xl mx-auto font-medium leading-relaxed mb-10">
                     YouTubeとScratchを中心に技術解説、オリジナルゲーム、音楽動画を発信する中学生クリエイター。
                 </p>
 
-        
                 <div class="flex flex-wrap items-center justify-center gap-4">
                     <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" 
                        class="orange-gradient-bg text-white font-bold px-8 py-4 rounded-2xl shadow-lg hover:shadow-orange-500/25 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 text-base">
@@ -193,7 +254,7 @@
                         <span>YouTube チャンネル</span>
                     </a>
                     <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" 
-                       class="bg-white text-text-dark font-bold px-8 py-4 rounded-2xl shadow-md border border-orange-200/70 hover:border-accent-orange hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 text-base">
+                       class="bg-white dark:bg-zinc-800 text-text-dark theme-text-dark font-bold px-8 py-4 rounded-2xl shadow-md border border-orange-200/70 dark:border-zinc-700 hover:border-accent-orange hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 text-base">
                         <img src="./scratch-logo.png" alt="Scratch Icon" class="w-7 h-7 rounded-sm object-contain">
                         <span>Scratch プロフィール</span>
                     </a>
@@ -203,38 +264,36 @@
 
         <section id="stats" class="py-12 px-4 max-w-5xl mx-auto">
             <div class="text-center mb-12 reveal-element">
-                <h2 class="text-3xl font-black text-text-dark mb-3">数字で見るsyouka_iro</h2>
+                <h2 class="text-3xl font-black text-text-dark theme-text-dark mb-3">数字で見るsyouka_iro</h2>
                 <div class="w-12 h-1.5 orange-gradient-bg mx-auto rounded-full"></div>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-         
-                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 flex items-center gap-6 hover:shadow-card-hover transition-all duration-300">
-                    <div class="w-16 h-16 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center text-3xl shrink-0">
+                <div class="reveal-element bg-white theme-card rounded-3xl p-8 shadow-card border border-orange-100/60 flex items-center gap-6 hover:shadow-card-hover transition-all duration-300">
+                    <div class="w-16 h-16 rounded-2xl bg-red-50 dark:bg-red-950/40 text-red-500 flex items-center justify-center text-3xl shrink-0">
                         <i class="fa-brands fa-youtube"></i>
                     </div>
                     <div>
-                        <div class="text-xs font-bold tracking-wider text-text-muted uppercase mb-1">YouTube Subscribers</div>
+                        <div class="text-xs font-bold tracking-wider text-text-muted theme-text-muted uppercase mb-1">YouTube Subscribers</div>
                         <div class="flex items-baseline gap-2">
                             <span class="text-4xl font-black text-text-dark orange-gradient-text">74</span>
-                            <span class="text-sm font-bold text-text-muted">人</span>
+                            <span class="text-sm font-bold text-text-muted theme-text-muted">人</span>
                         </div>
-                        <div class="text-xs text-gray-400 mt-1">2026年9月6日 現在</div>
+                        <div class="text-xs text-gray-400 dark:text-zinc-500 mt-1">2026年9月6日 現在</div>
                     </div>
                 </div>
 
-                
-                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 flex items-center gap-6 hover:shadow-card-hover transition-all duration-300">
-                    <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-3xl shrink-0">
+                <div class="reveal-element bg-white theme-card rounded-3xl p-8 shadow-card border border-orange-100/60 flex items-center gap-6 hover:shadow-card-hover transition-all duration-300">
+                    <div class="w-16 h-16 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center text-3xl shrink-0">
                         <img src="./scratch-logo.png" alt="Scratch Icon" class="w-10 h-10 object-contain">
                     </div>
                     <div>
-                        <div class="text-xs font-bold tracking-wider text-text-muted uppercase mb-1">Scratch Followers</div>
+                        <div class="text-xs font-bold tracking-wider text-text-muted theme-text-muted uppercase mb-1">Scratch Followers</div>
                         <div class="flex items-baseline gap-2">
                             <span class="text-4xl font-black text-text-dark orange-gradient-text">130</span>
-                            <span class="text-sm font-bold text-text-muted">人</span>
+                            <span class="text-sm font-bold text-text-muted theme-text-muted">人</span>
                         </div>
-                        <div class="text-xs text-gray-400 mt-1">2026年9月6日 現在</div>
+                        <div class="text-xs text-gray-400 dark:text-zinc-500 mt-1">2026年9月6日 現在</div>
                     </div>
                 </div>
             </div>
@@ -242,133 +301,125 @@
 
         <section id="about" class="py-16 px-4 max-w-5xl mx-auto">
             <div class="text-center mb-12 reveal-element">
-                <h2 class="text-3xl font-black text-text-dark mb-3">プロフィール・経歴</h2>
+                <h2 class="text-3xl font-black text-text-dark theme-text-dark mb-3">プロフィール・経歴</h2>
                 <div class="w-12 h-1.5 orange-gradient-bg mx-auto rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-   
-                <div class="lg:col-span-2 reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 space-y-6">
-                    <h3 class="text-xl font-bold text-text-dark border-b border-gray-100 pb-4 flex items-center gap-3">
+                <div class="lg:col-span-2 reveal-element bg-white theme-card rounded-3xl p-8 shadow-card border border-orange-100/60 space-y-6">
+                    <h3 class="text-xl font-bold text-text-dark theme-text-dark border-b border-gray-100 dark:border-zinc-800 pb-4 flex items-center gap-3">
                         <i class="fa-solid fa-user-gear text-accent-deep"></i> 基本情報
                     </h3>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
-                            <span class="text-xs font-bold text-accent-deep block mb-1">名前</span>
-                            <span class="font-bold text-text-dark">syouka_iro（しょうか いろ）</span>
+                        <div class="p-4 rounded-2xl bg-orange-50/50 theme-card-sub border border-orange-100/80">
+                            <span class="text-xs font-bold text-accent-deep dark:text-accent-orange block mb-1">名前</span>
+                            <span class="font-bold text-text-dark theme-text-dark">syouka_iro（しょうか いろ）</span>
                         </div>
 
-                        <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
-                            <span class="text-xs font-bold text-accent-deep block mb-1">誕生日</span>
-                            <span class="font-bold text-text-dark">5月18日</span>
+                        <div class="p-4 rounded-2xl bg-orange-50/50 theme-card-sub border border-orange-100/80">
+                            <span class="text-xs font-bold text-accent-deep dark:text-accent-orange block mb-1">誕生日</span>
+                            <span class="font-bold text-text-dark theme-text-dark">5月18日</span>
                         </div>
 
-                        <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
-                            <span class="text-xs font-bold text-accent-deep block mb-1">属性</span>
-                            <span class="font-bold text-text-dark">中学生クリエイター（推定男性）</span>
+                        <div class="p-4 rounded-2xl bg-orange-50/50 theme-card-sub border border-orange-100/80">
+                            <span class="text-xs font-bold text-accent-deep dark:text-accent-orange block mb-1">属性</span>
+                            <span class="font-bold text-text-dark theme-text-dark">中学生クリエイター（推定男性）</span>
                         </div>
 
-                        <div class="p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
-                            <span class="text-xs font-bold text-accent-deep block mb-1">拠点</span>
-                            <span class="font-bold text-text-dark">日本</span>
+                        <div class="p-4 rounded-2xl bg-orange-50/50 theme-card-sub border border-orange-100/80">
+                            <span class="text-xs font-bold text-accent-deep dark:text-accent-orange block mb-1">拠点</span>
+                            <span class="font-bold text-text-dark theme-text-dark">日本</span>
                         </div>
                     </div>
 
-                    <p class="text-text-muted leading-relaxed text-sm sm:text-base pt-2">
+                    <p class="text-text-muted theme-text-muted leading-relaxed text-sm sm:text-base pt-2">
                         YouTubeとScratchをメインに、プログラミング技術やエンターテインメント表現を追求中。独創的なクリエイティブ活動を展開しています。
                     </p>
                 </div>
 
-     
-                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 flex flex-col justify-between">
-                    <h3 class="text-xl font-bold text-text-dark border-b border-gray-100 pb-4 flex items-center gap-3">
+                <div class="reveal-element bg-white theme-card rounded-3xl p-8 shadow-card border border-orange-100/60 flex flex-col justify-between">
+                    <h3 class="text-xl font-bold text-text-dark theme-text-dark border-b border-gray-100 dark:border-zinc-800 pb-4 flex items-center gap-3">
                         <i class="fa-solid fa-clock-rotate-left text-accent-deep"></i> タイムライン
                     </h3>
 
-                    <div class="space-y-6 my-6 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-orange-100">
- 
+                    <div class="space-y-6 my-6 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-orange-100 dark:before:bg-zinc-800">
                         <div class="relative pl-8">
-                            <div class="absolute left-2 top-1.5 w-3 h-3 rounded-full orange-gradient-bg ring-4 ring-white"></div>
-                            <span class="text-xs font-extrabold text-accent-deep">2025年 3月</span>
-                            <p class="text-sm font-bold text-text-dark mt-0.5">Scratchアカウント開設</p>
-                            <p class="text-xs text-text-muted mt-1">同年3月9日に初作品投稿。</p>
+                            <div class="absolute left-2 top-1.5 w-3 h-3 rounded-full orange-gradient-bg ring-4 ring-white dark:ring-zinc-900"></div>
+                            <span class="text-xs font-extrabold text-accent-deep dark:text-accent-orange">2025年 3月</span>
+                            <p class="text-sm font-bold text-text-dark theme-text-dark mt-0.5">Scratchアカウント開設</p>
+                            <p class="text-xs text-text-muted theme-text-muted mt-1">同年3月9日に初作品投稿。</p>
                         </div>
 
                         <div class="relative pl-8">
-                            <div class="absolute left-2 top-1.5 w-3 h-3 rounded-full orange-gradient-bg ring-4 ring-white"></div>
-                            <span class="text-xs font-extrabold text-accent-deep">2026年 1月25日</span>
-                            <p class="text-sm font-bold text-text-dark mt-0.5">YouTubeチャンネル開設</p>
-                            <p class="text-xs text-text-muted mt-1">同年2月に動画初投稿。</p>
+                            <div class="absolute left-2 top-1.5 w-3 h-3 rounded-full orange-gradient-bg ring-4 ring-white dark:ring-zinc-900"></div>
+                            <span class="text-xs font-extrabold text-accent-deep dark:text-accent-orange">2026年 1月25日</span>
+                            <p class="text-sm font-bold text-text-dark theme-text-dark mt-0.5">YouTubeチャンネル開設</p>
+                            <p class="text-xs text-text-muted theme-text-muted mt-1">同年2月に動画初投稿。</p>
                         </div>
                     </div>
 
-                    <div class="p-3 bg-brand-light/60 rounded-2xl text-center text-xs font-bold text-accent-deep">
-                    積極的に作品・動画を投稿中！
+                    <div class="p-3 bg-brand-light/60 theme-card-sub rounded-2xl text-center text-xs font-bold text-accent-deep dark:text-accent-orange">
+                        積極的に作品・動画を投稿中！
                     </div>
                 </div>
             </div>
         </section>
 
-
         <section id="activities" class="py-16 px-4 max-w-5xl mx-auto">
             <div class="text-center mb-12 reveal-element">
-                <h2 class="text-3xl font-black text-text-dark mb-3">主な活動</h2>
+                <h2 class="text-3xl font-black text-text-dark theme-text-dark mb-3">主な活動</h2>
                 <div class="w-12 h-1.5 orange-gradient-bg mx-auto rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
-                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-accent-deep flex items-center justify-center text-2xl mb-6">
+                <div class="reveal-element bg-white theme-card rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-accent-deep dark:text-accent-orange flex items-center justify-center text-2xl mb-6">
                         <i class="fa-solid fa-code"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-text-dark mb-3">Scratch 技術解説</h3>
-                    <p class="text-text-muted text-sm leading-relaxed">
+                    <h3 class="text-lg font-bold text-text-dark theme-text-dark mb-3">Scratch 技術解説</h3>
+                    <p class="text-text-muted theme-text-muted text-sm leading-relaxed">
                         YouTubeにて、Scratchを使ったプログラミング技法やアルゴリズムの解説動画を制作・投稿しています。
                     </p>
                 </div>
 
-            
-                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
-                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-accent-deep flex items-center justify-center text-2xl mb-6">
+                <div class="reveal-element bg-white theme-card rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-accent-deep dark:text-accent-orange flex items-center justify-center text-2xl mb-6">
                         <i class="fa-solid fa-gamepad"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-text-dark mb-3">ゲーム開発</h3>
-                    <p class="text-text-muted text-sm leading-relaxed">
+                    <h3 class="text-lg font-bold text-text-dark theme-text-dark mb-3">ゲーム開発</h3>
+                    <p class="text-text-muted theme-text-muted text-sm leading-relaxed">
                         Scratchを中心に、アイデア溢れる様々なオリジナルゲームを制作し公開しています。
                     </p>
                 </div>
 
-              
-                <div class="reveal-element bg-white rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
-                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-accent-deep flex items-center justify-center text-2xl mb-6">
+                <div class="reveal-element bg-white theme-card rounded-3xl p-8 shadow-card border border-orange-100/60 hover:-translate-y-2 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-accent-deep dark:text-accent-orange flex items-center justify-center text-2xl mb-6">
                         <i class="fa-solid fa-music"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-text-dark mb-3">音楽 & 替え歌動画</h3>
-                    <p class="text-text-muted text-sm leading-relaxed">
+                    <h3 class="text-lg font-bold text-text-dark theme-text-dark mb-3">音楽 & 替え歌動画</h3>
+                    <p class="text-text-muted theme-text-muted text-sm leading-relaxed">
                         音楽系の企画や人気の話題を取り入れたオリジナル替え歌動画など、エンタメ作品も手掛けています。
                     </p>
                 </div>
             </div>
         </section>
 
-        
         <section id="works" class="py-16 px-4 max-w-5xl mx-auto">
             <div class="text-center mb-12 reveal-element">
-                <h2 class="text-3xl font-black text-text-dark mb-3">注目の作品</h2>
-                <p class="text-text-muted text-sm font-bold">最高再生数を誇る人気コンテンツ</p>
+                <h2 class="text-3xl font-black text-text-dark theme-text-dark mb-3">注目の作品</h2>
+                <p class="text-text-muted theme-text-muted text-sm font-bold">最高再生数を誇る人気コンテンツ</p>
                 <div class="w-12 h-1.5 orange-gradient-bg mx-auto rounded-full mt-3"></div>
             </div>
 
-            
-            <div class="reveal-element bg-white rounded-3xl overflow-hidden shadow-card border border-orange-100/60 grid grid-cols-1 md:grid-cols-12 gap-0 hover:shadow-card-hover transition-all duration-300">
+            <div class="reveal-element bg-white theme-card rounded-3xl overflow-hidden shadow-card border border-orange-100/60 grid grid-cols-1 md:grid-cols-12 gap-0 hover:shadow-card-hover transition-all duration-300">
                 <div class="md:col-span-7 bg-amber-900/10 p-8 flex flex-col justify-between relative overflow-hidden min-h-[260px]">
                     <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('https://img.youtube.com/vi/iEA_32ceYI4/maxresdefault.jpg');"></div>
                     <div class="relative z-10">
                         <span class="inline-block bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full mb-4 shadow">
                             <i class="fa-brands fa-youtube"></i> Most Played Video
                         </span>
-                        <h3 class="text-2xl sm:text-3xl font-black text-text-dark leading-tight mb-3">
+                        <h3 class="text-2xl sm:text-3xl font-black text-text-dark theme-text-dark leading-tight mb-3">
                             暑すぎて滅！【替え歌】M!LK/好きすぎて滅！
                         </h3>
                     </div>
@@ -380,12 +431,12 @@
                     </div>
                 </div>
 
-                <div class="md:col-span-5 p-8 flex flex-col justify-center bg-white">
-                    <h4 class="text-xs font-extrabold text-accent-deep tracking-wider uppercase mb-2">概要</h4>
-                    <p class="text-text-muted text-sm leading-relaxed mb-6">
+                <div class="md:col-span-5 p-8 flex flex-col justify-center bg-white theme-card">
+                    <h4 class="text-xs font-extrabold text-accent-deep dark:text-accent-orange tracking-wider uppercase mb-2">概要</h4>
+                    <p class="text-text-muted theme-text-muted text-sm leading-relaxed mb-6">
                         syouka_iroのYouTubeチャンネルで**最も再生されている人気横動画**。コミカルでテンポの良い替え歌表現が話題の動画です！
                     </p>
-                    <div class="flex items-center gap-4 text-xs font-bold text-gray-500 border-t border-gray-100 pt-4">
+                    <div class="flex items-center gap-4 text-xs font-bold text-gray-500 dark:text-zinc-400 border-t border-gray-100 dark:border-zinc-800 pt-4">
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-video text-accent-orange"></i> 横動画</span>
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-thumbs-up text-accent-orange"></i> 大好評配信中</span>
                     </div>
@@ -394,59 +445,93 @@
         </section>
     </main>
 
-<section id="question" class="py-12 reveal-element">
-    <div class="max-w-4xl mx-auto px-4">
-        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-card border border-orange-100 text-center relative overflow-hidden">
- 
-            <div class="absolute -right-6 -bottom-6 text-accent-orange/10 text-8xl pointer-events-none">
-                <i class="fa-solid fa-comment-dots"></i>
-            </div>
+    <section id="question" class="py-12 reveal-element">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="bg-white theme-card rounded-2xl p-6 sm:p-8 shadow-card border border-orange-100/60 text-center relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 text-accent-orange/10 text-8xl pointer-events-none">
+                    <i class="fa-solid fa-comment-dots"></i>
+                </div>
 
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-light text-accent-deep mb-4">
-                <i class="fa-solid fa-paper-plane text-xl"></i>
-            </div>
-            
-            <h2 class="text-xl sm:text-2xl font-bold text-text-dark mb-2">
-                匿名質問募集中！
-            </h2>
-            <p class="text-sm sm:text-base text-text-muted mb-6 max-w-lg mx-auto">
-                YouTubeやScratchについての質問、動画の感想やメッセージなど、マシュマロで気軽に送ってください！
-            </p>
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-light theme-card-sub text-accent-deep dark:text-amber-400 mb-4">
+                    <i class="fa-solid fa-paper-plane text-xl"></i>
+                </div>
+                
+                <h2 class="text-xl sm:text-2xl font-bold text-text-dark theme-text-dark mb-2">
+                    匿名質問募集中！
+                </h2>
+                <p class="text-sm sm:text-base text-text-muted theme-text-muted mb-6 max-w-lg mx-auto">
+                    YouTubeやScratchについての質問、動画の感想やメッセージなど、マシュマロで気軽に送ってください！
+                </p>
 
-            <a href="https://marshmallow-qa.com/1vunyq8xouv5ncu?t=ry9NII&utm_medium=url_text&utm_source=promotion" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full orange-gradient-bg text-white font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-                <i class="fa-solid fa-heart"></i>
-                <span>マシュマロで質問を送る</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
-            </a>
+                <a href="https://marshmallow-qa.com/1vunyq8xouv5ncu?t=ry9NII&utm_medium=url_text&utm_source=promotion" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full orange-gradient-bg text-white font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>マシュマロで質問を送る</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
+                </a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-
-    <footer class="bg-white border-t border-orange-100 py-12 mt-20">
+    <footer class="bg-white theme-footer border-t border-orange-100 py-12 mt-20 transition-colors duration-300">
         <div class="max-w-5xl mx-auto px-4 text-center">
             <div class="flex justify-center gap-6 mb-6">
-                <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-orange-50 text-accent-deep hover:orange-gradient-bg hover:text-white flex items-center justify-center text-xl transition-all duration-300">
+                <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-orange-50 theme-card-sub text-accent-deep dark:text-amber-400 hover:orange-gradient-bg hover:text-white flex items-center justify-center text-xl transition-all duration-300">
                     <i class="fa-brands fa-youtube"></i>
                 </a>
-                <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-orange-50 text-accent-deep hover:orange-gradient-bg hover:text-white flex items-center justify-center text-xl transition-all duration-300">
+                <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-orange-50 theme-card-sub text-accent-deep dark:text-amber-400 hover:orange-gradient-bg hover:text-white flex items-center justify-center text-xl transition-all duration-300">
                     <img src="./scratch-logo.png" alt="Scratch Icon" class="w-7 h-7 object-contain">
                 </a>
             </div>
 
-            <p class="text-xs text-text-muted font-bold mb-2">
+            <p class="text-xs text-text-muted theme-text-muted font-bold mb-2">
                 最終更新日: 2026年 9月6日
             </p>
-            <p class="text-xs text-gray-400">
+            <p class="text-xs text-gray-400 dark:text-zinc-500">
                 &copy; 2026 syouka_iro. All rights reserved.
             </p>
         </div>
     </footer>
 
     <script>
+        // --- ダークモード ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        const darkIconMobile = document.getElementById('theme-toggle-dark-icon-mobile');
+        const lightIconMobile = document.getElementById('theme-toggle-light-icon-mobile');
+
+        function updateIcons() {
+            if (document.documentElement.classList.contains('dark')) {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+                lightIconMobile.classList.remove('hidden');
+                darkIconMobile.classList.add('hidden');
+            } else {
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+                darkIconMobile.classList.remove('hidden');
+                lightIconMobile.classList.add('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateIcons();
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleMobileBtn.addEventListener('click', toggleTheme);
+        updateIcons();
 
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -455,13 +540,11 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
             });
         });
-
 
         const observerOptions = {
             threshold: 0.1,
