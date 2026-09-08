@@ -16,7 +16,7 @@
     <meta property="og:site_name" content="syouka_iro 公式サイト">
     <meta name="twitter:card" content="summary_large_image">
 
-    <link rel="manifest" href="./home.json">
+    <link rel="manifest" href="./manifest.json">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -171,12 +171,16 @@
                     </span>
                 </a>
 
-                <nav class="hidden md:flex items-center gap-6 text-sm font-bold text-text-muted theme-text-muted">
-                    <a href="#stats" class="hover:text-accent-deep transition-colors text-base">数字で見るsyouka_iro</a>
-                    <a href="#about" class="hover:text-accent-deep transition-colors text-base">プロフィール</a>
-                    <a href="#activities" class="hover:text-accent-deep transition-colors text-base">主な活動</a>
-                    <a href="#works" class="hover:text-accent-deep transition-colors text-base">注目作品</a>
-                    <a href="#question" class="hover:text-accent-deep transition-colors text-base">質問募集中！</a>
+                <nav class="hidden lg:flex items-center gap-4 text-sm font-bold text-text-muted theme-text-muted">
+                    <a href="#goal" class="hover:text-accent-deep transition-colors flex items-center gap-1">
+                        <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        100人チャレンジ！
+                    </a>
+                    <a href="#stats" class="hover:text-accent-deep transition-colors ">数字で見るsyouka_iro</a>
+                    <a href="#about" class="hover:text-accent-deep transition-colors ">プロフィール</a>
+                    <a href="#activities" class="hover:text-accent-deep transition-colors ">主な活動</a>
+                    <a href="#works" class="hover:text-accent-deep transition-colors ">注目作品</a>
+                    <a href="#question" class="hover:text-accent-deep transition-colors ">質問募集中！</a>
                     <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" 
                        class="orange-gradient-bg text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:opacity-95 transition-all duration-300 flex items-center gap-2 text-base">
                         <i class="fa-brands fa-youtube"></i> YouTube
@@ -205,6 +209,9 @@
 
         <!-- モバイルメニュー -->
         <div id="mobile-menu" class="hidden md:hidden bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-b border-orange-100 dark:border-zinc-800 px-6 py-6 space-y-4 shadow-lg">
+            <a href="#goal" class="block font-bold text-red-500 flex items-center gap-2">
+                <i class="fa-solid fa-bullseye"></i> 年内100人チャレンジ！
+            </a>
             <a href="#stats" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">数字で見るsyouka_iro</a>
             <a href="#about" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">プロフィール</a>
             <a href="#activities" class="block font-bold text-text-muted theme-text-muted hover:text-accent-deep">主な活動</a>
@@ -266,6 +273,111 @@
             </div>
         </section>
 
+<!-- YouTube Goal Progress Tracker Section -->
+<section id="goal" class="py-12 px-4 max-w-5xl mx-auto">
+    <div class="reveal-element bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-transparent dark:from-orange-950/40 dark:to-zinc-900 theme-card rounded-3xl p-6 sm:p-8 shadow-card border border-orange-200/80 dark:border-orange-900/50 relative overflow-hidden">
+        <div class="absolute -right-8 -top-8 text-orange-500/10 dark:text-orange-500/5 text-9xl pointer-events-none font-black">
+            100
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+            <div class="space-y-2 max-w-lg">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500 text-white text-xs font-black uppercase tracking-wider">
+                    <i class="fa-solid fa-fire animate-bounce"></i> 年内大目標
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-text-dark theme-text-dark">
+                    YouTube 登録者 <span class="orange-gradient-text">100人</span> 目指して活動中！
+                </h2>
+                <p class="text-sm text-text-muted theme-text-muted">
+                    年内にチャンネル登録者数100人達成を目指しています！皆様の応援・チャンネル登録が大きな力になります！
+                </p>
+            </div>
+
+            <!-- Counter Widget -->
+            <div class="w-full md:w-80 bg-white dark:bg-zinc-900 p-5 rounded-2xl shadow-md border border-orange-100 dark:border-zinc-800">
+                <div class="flex justify-between items-baseline mb-2">
+                    <span class="text-xs font-bold text-text-muted theme-text-muted">現在の登録者数</span>
+                    <div class="flex items-baseline gap-1">
+                        <span id="subscriber-count" class="text-3xl font-black text-accent-deep dark:text-accent-orange">0</span>
+                        <span class="text-sm font-bold text-text-muted">/ 100人</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-orange-100 dark:bg-zinc-800 rounded-full h-4 overflow-hidden p-0.5 border border-orange-200 dark:border-zinc-700 mb-3">
+                    <div id="goal-progress-bar" class="orange-gradient-bg h-full rounded-full transition-all duration-1000 ease-out" style="width: 0%;"></div>
+                </div>
+
+                <div class="flex justify-between text-[11px] font-bold text-text-muted theme-text-muted">
+                    <span>進捗度: <strong id="goal-percent" class="text-accent-deep dark:text-accent-orange">0%</strong></span>
+                    <span id="remaining-container">あと <strong id="remaining-count" class="text-red-500">100人</strong>！</span>
+                </div>
+
+                <a href="https://www.youtube.com/@syouka_iro?sub_confirmation=1" target="_blank" rel="noopener" 
+                   class="mt-4 w-full py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow transition-all">
+                    <i class="fa-brands fa-youtube text-base"></i> 今すぐ登録して応援する！
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 自動連動・達成判定スクリプト -->
+<script>
+  // ==========================================
+  // 【設定】現在のチャンネル登録者数をここに入力
+  // ==========================================
+  const currentSubscribers = 74; // 100以上にすると「目標達成！」表示に切り替わります
+  const goalSubscribers = 100;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // 各要素の取得
+    const subCountEl = document.getElementById('subscriber-count');
+    const remainingContainerEl = document.getElementById('remaining-container');
+    const percentEl = document.getElementById('goal-percent');
+    const progressBarEl = document.getElementById('goal-progress-bar');
+
+    // 数値計算
+    const remainingSubscribers = goalSubscribers - currentSubscribers;
+    const percent = Math.round((currentSubscribers / goalSubscribers) * 100);
+
+    // 基本値のセット
+    if (subCountEl) subCountEl.textContent = currentSubscribers;
+    if (percentEl) percentEl.textContent = `${percent}%`;
+
+    // 100人達成時の判定処理
+    if (currentSubscribers >= goalSubscribers) {
+      // 1. 「あと〇〇人！」のテキストを「🎉 目標達成！！」に変更
+      if (remainingContainerEl) {
+        remainingContainerEl.innerHTML = '<span class="text-emerald-500 font-extrabold animate-pulse">🎉 目標達成！！</span>';
+      }
+
+      // 2. プログレスバーの見た目を100%以上に補正＆特別なアニメーションを追加
+      if (progressBarEl) {
+        progressBarEl.style.width = '100%';
+        progressBarEl.classList.add('bg-gradient-to-r', 'from-amber-400', 'to-emerald-400');
+      }
+
+      // 3. 数字の色を達成用の特別感のあるカラー（緑または金）に変更
+      if (subCountEl) {
+        subCountEl.classList.remove('text-accent-deep');
+        subCountEl.classList.add('text-emerald-500');
+      }
+    } else {
+      // 未達成時の通常処理（あと〇〇人！）
+      if (remainingContainerEl) {
+        remainingContainerEl.innerHTML = `あと <strong class="text-red-500">${remainingSubscribers}人</strong>！`;
+      }
+      if (progressBarEl) {
+        setTimeout(() => {
+          progressBarEl.style.width = `${percent}%`;
+        }, 200);
+      }
+    }
+  });
+</script>
+
+        
         <section id="stats" class="py-12 px-4 max-w-5xl mx-auto">
             <div class="text-center mb-12 reveal-element">
                 <h2 class="text-3xl font-black text-text-dark theme-text-dark mb-3">数字で見るsyouka_iro</h2>
@@ -283,7 +395,7 @@
                             <span class="text-4xl font-black text-text-dark orange-gradient-text">74</span>
                             <span class="text-sm font-bold text-text-muted theme-text-muted">人</span>
                         </div>
-                        <div class="text-xs text-gray-400 dark:text-zinc-500 mt-1">2026年9月6日 現在</div>
+                        <div class="text-xs text-gray-400 dark:text-zinc-500 mt-1">2026年9月9日 現在</div>
                     </div>
                 </div>
 
@@ -294,10 +406,10 @@
                     <div>
                         <div class="text-xs font-bold tracking-wider text-text-muted theme-text-muted uppercase mb-1">Scratch Followers</div>
                         <div class="flex items-baseline gap-2">
-                            <span class="text-4xl font-black text-text-dark orange-gradient-text">130</span>
+                            <span class="text-4xl font-black text-text-dark orange-gradient-text">131</span>
                             <span class="text-sm font-bold text-text-muted theme-text-muted">人</span>
                         </div>
-                        <div class="text-xs text-gray-400 dark:text-zinc-500 mt-1">2026年9月6日 現在</div>
+                        <div class="text-xs text-gray-400 dark:text-zinc-500 mt-1">2026年9月9日 現在</div>
                     </div>
                 </div>
             </div>
@@ -447,57 +559,121 @@
                 </div>
             </div>
         </section>
+        <section id="question" class="py-12 reveal-element">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-card border border-orange-100 text-center relative overflow-hidden">
+ 
+            <div class="absolute -right-6 -bottom-6 text-accent-orange/10 text-8xl pointer-events-none">
+                <i class="fa-solid fa-comment-dots"></i>
+            </div>
+
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-light text-accent-deep mb-4">
+                <i class="fa-solid fa-paper-plane text-xl"></i>
+            </div>
+            
+            <h2 class="text-xl sm:text-2xl font-bold text-text-dark mb-2">
+                匿名質問募集中！
+            </h2>
+            <p class="text-sm sm:text-base text-text-muted mb-6 max-w-lg mx-auto">
+                YouTubeやScratchについての質問、動画の感想やメッセージなど、マシュマロで気軽に送ってください！
+            </p>
+
+            <a href="https://marshmallow-qa.com/1vunyq8xouv5ncu?t=ry9NII&utm_medium=url_text&utm_source=promotion" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full orange-gradient-bg text-white font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+                <i class="fa-solid fa-heart"></i>
+                <span>マシュマロで質問を送る</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
     </main>
 
-    <section id="question" class="py-12 reveal-element">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="bg-white theme-card rounded-2xl p-6 sm:p-8 shadow-card border border-orange-100/60 text-center relative overflow-hidden">
-                <div class="absolute -right-6 -bottom-6 text-accent-orange/10 text-8xl pointer-events-none">
-                    <i class="fa-solid fa-comment-dots"></i>
-                </div>
 
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-light theme-card-sub text-accent-deep dark:text-amber-400 mb-4">
-                    <i class="fa-solid fa-paper-plane text-xl"></i>
+    
+<footer class="bg-white theme-footer border-t border-orange-200/60 dark:border-orange-900/40 pt-16 pb-12 mt-20 transition-colors duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+      
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-orange-100 dark:border-zinc-800">
+            
+            
+            <div class="md:col-span-5 space-y-4">
+                <div class="flex items-center gap-3">
+                    <img src="https://yt3.googleusercontent.com/kTHzqCkIH1zjf53wdph4JK3wSLUOCVCh1-ZH2WzyEozoAo7_EMGsNhAMimmybRrQxM94qiTYGA=s160-c-k-c0x00ffffff-no-rj" 
+                         alt="syouka_iro Icon" 
+                         class="w-12 h-12 rounded-full border-2 border-accent-orange object-cover shadow-sm"
+                         onerror="this.src='https://placehold.co/100x100/ffe7d6/e66b23?text=SI'">
+                    <div>
+                        <span class="font-black text-xl text-text-dark theme-text-dark block leading-tight">syouka_iro</span>
+                        <span class="text-xs font-bold text-accent-deep dark:text-accent-orange">しょうか いろ / Official Site</span>
+                    </div>
                 </div>
-                
-                <h2 class="text-xl sm:text-2xl font-bold text-text-dark theme-text-dark mb-2">
-                    匿名質問募集中！
-                </h2>
-                <p class="text-sm sm:text-base text-text-muted theme-text-muted mb-6 max-w-lg mx-auto">
-                    YouTubeやScratchについての質問、動画の感想やメッセージなど、マシュマロで気軽に送ってください！
+                <p class="text-xs sm:text-sm text-text-muted theme-text-muted leading-relaxed max-w-sm">
+                    YouTubeとScratchを中心に活動中の中学生クリエイター。プログラミング技術の解説やオリジナルゲームの制作、替え歌等の音楽コンテンツを発信しています。
                 </p>
-
-                <a href="https://marshmallow-qa.com/1vunyq8xouv5ncu?t=ry9NII&utm_medium=url_text&utm_source=promotion" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full orange-gradient-bg text-white font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-                    <i class="fa-solid fa-heart"></i>
-                    <span>マシュマロで質問を送る</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
-                </a>
             </div>
+
+           
+            <div class="md:col-span-3 space-y-3">
+                <h3 class="text-xs font-black uppercase tracking-wider text-accent-deep dark:text-accent-orange">ページ内メニュー</h3>
+                <ul class="space-y-2 text-xs sm:text-sm font-bold text-text-muted theme-text-muted">
+                    <li><a href="#goal" class="hover:text-accent-deep transition-colors flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-accent-orange text-xs"></i> 100人チャレンジ</a></li>
+                    <li><a href="#stats" class="hover:text-accent-deep transition-colors flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-accent-orange text-xs"></i> 数字で見るsyouka_iro</a></li>
+                    <li><a href="#about" class="hover:text-accent-deep transition-colors flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-accent-orange text-xs"></i> プロフィール・経歴</a></li>
+                    <li><a href="#activities" class="hover:text-accent-deep transition-colors flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-accent-orange text-xs"></i> 主な活動</a></li>
+                    <li><a href="#works" class="hover:text-accent-deep transition-colors flex items-center gap-1.5"><i class="fa-solid fa-angle-right text-accent-orange text-xs"></i> 注目作品</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="md:col-span-4 space-y-3">
+                <h3 class="text-xs font-black uppercase tracking-wider text-accent-deep dark:text-accent-orange">公式リンク & 質問箱</h3>
+                <div class="flex flex-col gap-2.5">
+                    <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" 
+                       class="flex items-center gap-3 p-2.5 rounded-xl bg-orange-50/80 theme-card-sub hover:bg-red-50 dark:hover:bg-red-950/30 transition-all group">
+                        <span class="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-brands fa-youtube"></i>
+                        </span>
+                        <span class="text-xs font-bold text-text-dark theme-text-dark group-hover:text-red-500 transition-colors">YouTube チャンネル</span>
+                    </a>
+
+                    <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" 
+                       class="flex items-center gap-3 p-2.5 rounded-xl bg-orange-50/80 theme-card-sub hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-all group">
+                        <span class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center text-sm shrink-0">
+                            <img src="./scratch-logo.png" alt="Scratch Icon" class="w-5 h-5 object-contain">
+                        </span>
+                        <span class="text-xs font-bold text-text-dark theme-text-dark group-hover:text-amber-500 transition-colors">Scratch プロフィール</span>
+                    </a>
+
+                    <a href="https://marshmallow-qa.com/1vunyq8xouv5ncu?t=ry9NII&utm_medium=url_text&utm_source=promotion" target="_blank" rel="noopener" 
+                       class="flex items-center gap-3 p-2.5 rounded-xl bg-orange-50/80 theme-card-sub hover:bg-pink-50 dark:hover:bg-pink-950/30 transition-all group">
+                        <span class="w-8 h-8 rounded-lg bg-pink-400 text-white flex items-center justify-center text-sm font-bold shrink-0 shadow-sm">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </span>
+                        <span class="text-xs font-bold text-text-dark theme-text-dark group-hover:text-pink-500 transition-colors">マシュマロ（匿名質問箱）</span>
+                    </a>
+                </div>
+            </div>
+
         </div>
-    </section>
 
-    <footer class="bg-white theme-footer border-t border-orange-100 py-12 mt-20 transition-colors duration-300">
-        <div class="max-w-5xl mx-auto px-4 text-center">
-            <div class="flex justify-center gap-6 mb-6">
-                <a href="https://www.youtube.com/@syouka_iro" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-orange-50 theme-card-sub text-accent-deep dark:text-amber-400 hover:orange-gradient-bg hover:text-white flex items-center justify-center text-xl transition-all duration-300">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
-                <a href="https://scratch.mit.edu/users/syouka_iro/" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-orange-50 theme-card-sub text-accent-deep dark:text-amber-400 hover:orange-gradient-bg hover:text-white flex items-center justify-center text-xl transition-all duration-300">
-                    <img src="./scratch-logo.png" alt="Scratch Icon" class="w-7 h-7 object-contain">
-                </a>
+        
+        <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted theme-text-muted">
+            <div class="flex items-center gap-2 font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>最終更新日: 2026年 9月9日</span>
             </div>
-
-            <p class="text-xs text-text-muted theme-text-muted font-bold mb-2">
-                最終更新日: 2026年 9月6日
-            </p>
-            <p class="text-xs text-gray-400 dark:text-zinc-500">
+            <p class="text-gray-400 dark:text-zinc-500 text-center sm:text-right">
                 &copy; 2026 syouka_iro. All rights reserved.
             </p>
         </div>
-    </footer>
+
+    </div>
+</footer>
 
     <script>
         const themeToggleBtn = document.getElementById('theme-toggle');
