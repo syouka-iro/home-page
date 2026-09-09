@@ -155,6 +155,7 @@
         }
     </script>
 </head>
+
 <body class="font-sans antialiased selection:bg-accent-orange selection:text-white">
 
     <header class="fixed top-0 left-0 w-full z-50 glass-nav border-b border-orange-200/40 transition-all duration-300">
@@ -322,61 +323,6 @@
     </div>
 </section>
 
-<!-- 自動連動・達成判定スクリプト -->
-<script>
-  // ==========================================
-  // 【設定】現在のチャンネル登録者数をここに入力
-  // ==========================================
-  const currentSubscribers = 74; // 100以上にすると「目標達成！」表示に切り替わります
-  const goalSubscribers = 100;
-
-  document.addEventListener('DOMContentLoaded', () => {
-    // 各要素の取得
-    const subCountEl = document.getElementById('subscriber-count');
-    const remainingContainerEl = document.getElementById('remaining-container');
-    const percentEl = document.getElementById('goal-percent');
-    const progressBarEl = document.getElementById('goal-progress-bar');
-
-    // 数値計算
-    const remainingSubscribers = goalSubscribers - currentSubscribers;
-    const percent = Math.round((currentSubscribers / goalSubscribers) * 100);
-
-    // 基本値のセット
-    if (subCountEl) subCountEl.textContent = currentSubscribers;
-    if (percentEl) percentEl.textContent = `${percent}%`;
-
-    // 100人達成時の判定処理
-    if (currentSubscribers >= goalSubscribers) {
-      // 1. 「あと〇〇人！」のテキストを「🎉 目標達成！！」に変更
-      if (remainingContainerEl) {
-        remainingContainerEl.innerHTML = '<span class="text-emerald-500 font-extrabold animate-pulse">🎉 目標達成！！</span>';
-      }
-
-      // 2. プログレスバーの見た目を100%以上に補正＆特別なアニメーションを追加
-      if (progressBarEl) {
-        progressBarEl.style.width = '100%';
-        progressBarEl.classList.add('bg-gradient-to-r', 'from-amber-400', 'to-emerald-400');
-      }
-
-      // 3. 数字の色を達成用の特別感のあるカラー（緑または金）に変更
-      if (subCountEl) {
-        subCountEl.classList.remove('text-accent-deep');
-        subCountEl.classList.add('text-emerald-500');
-      }
-    } else {
-      // 未達成時の通常処理（あと〇〇人！）
-      if (remainingContainerEl) {
-        remainingContainerEl.innerHTML = `あと <strong class="text-red-500">${remainingSubscribers}人</strong>！`;
-      }
-      if (progressBarEl) {
-        setTimeout(() => {
-          progressBarEl.style.width = `${percent}%`;
-        }, 200);
-      }
-    }
-  });
-</script>
-
         
         <section id="stats" class="py-12 px-4 max-w-5xl mx-auto">
             <div class="text-center mb-12 reveal-element">
@@ -392,10 +338,10 @@
                     <div>
                         <div class="text-xs font-bold tracking-wider text-text-muted theme-text-muted uppercase mb-1">YouTube Subscribers</div>
                         <div class="flex items-baseline gap-2">
-                            <span class="text-4xl font-black text-text-dark orange-gradient-text">74</span>
+                            <span id="stats-subscriber-count" class="text-4xl font-black text-text-dark orange-gradient-text">--</span>
                             <span class="text-sm font-bold text-text-muted theme-text-muted">人</span>
                         </div>
-                        <div class="text-xs text-gray-400 dark:text-zinc-500 mt-1">2026年9月9日 現在</div>
+                        <div id="current-date" class="text-xs text-gray-400 dark:text-zinc-500 mt-1"></div>
                     </div>
                 </div>
 
@@ -665,7 +611,7 @@
         <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted theme-text-muted">
             <div class="flex items-center gap-2 font-bold">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>最終更新日: 2026年 9月9日</span>
+                <span id="current-date-v2">最終更新日: 2026年 9月9日</span>
             </div>
             <p class="text-gray-400 dark:text-zinc-500 text-center sm:text-right">
                 &copy; 2026 syouka_iro. All rights reserved.
@@ -764,5 +710,101 @@
             observer.observe(el);
         });
     </script>
+    
+    <script>
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; 
+  const day = today.getDate();
+
+  const dateString = `${year}年${month}月${day}日 現在`;
+  document.getElementById('current-date').textContent = dateString;
+</script>
+
+        <script>
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+
+  const dateString = `最終更新日: ${year}年 ${month}月${day}日`;
+  document.getElementById('current-date-v2').textContent = dateString;
+</script>
+
+
+<script>
+
+  const YOUTUBE_API_KEY = 'AIzaSyDZrmNNdpi_8JHAMqBHY46IlKSHePxuOkk'; 
+  const YOUTUBE_CHANNEL_ID = 'UCBk5jIV-ymV55rj9zgHWjaw';
+  const GOAL_SUBSCRIBERS = 100;
+
+  function updateUI(currentSubscribers) {
+    const subCountEl = document.getElementById('subscriber-count');
+    const statsSubCountEl = document.getElementById('stats-subscriber-count');
+    const remainingContainerEl = document.getElementById('remaining-container');
+    const percentEl = document.getElementById('goal-percent');
+    const progressBarEl = document.getElementById('goal-progress-bar');
+
+    if (statsSubCountEl) {
+      statsSubCountEl.textContent = currentSubscribers.toLocaleString();
+    }
+
+    
+    const remainingSubscribers = GOAL_SUBSCRIBERS - currentSubscribers;
+    const percent = Math.min(Math.round((currentSubscribers / GOAL_SUBSCRIBERS) * 100), 100);
+
+    if (subCountEl) subCountEl.textContent = currentSubscribers.toLocaleString();
+    if (percentEl) percentEl.textContent = `${percent}%`;
+
+    if (currentSubscribers >= GOAL_SUBSCRIBERS) {
+      if (remainingContainerEl) {
+        remainingContainerEl.innerHTML = '<span class="text-emerald-500 font-extrabold animate-pulse">🎉 目標達成！！</span>';
+      }
+      if (progressBarEl) {
+        progressBarEl.style.width = '100%';
+        progressBarEl.classList.add('bg-gradient-to-r', 'from-amber-400', 'to-emerald-400');
+      }
+      if (subCountEl) {
+        subCountEl.classList.remove('text-accent-deep');
+        subCountEl.classList.add('text-emerald-500');
+      }
+    } else {
+
+      if (remainingContainerEl) {
+        remainingContainerEl.innerHTML = `あと <strong class="text-red-500">${remainingSubscribers}人</strong>！`;
+      }
+      if (progressBarEl) {
+        setTimeout(() => {
+          progressBarEl.style.width = `${percent}%`;
+        }, 200);
+      }
+    }
+  }
+
+
+  async function fetchLiveSubscribers() {
+    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+      
+      const data = await response.json();
+      
+      if (data.items && data.items.length > 0) {
+        const count = Number(data.items[0].statistics.subscriberCount);
+        updateUI(count);
+      }
+    } catch (error) {
+      console.error('YouTube Data API 取得エラー:', error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchLiveSubscribers();
+    setInterval(fetchLiveSubscribers, 300000);
+  });
+</script>
+    
 </body>
 </html>
