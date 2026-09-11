@@ -717,19 +717,17 @@
   const month = today.getMonth() + 1; 
   const day = today.getDate();
 
-  const dateString = `${year}年${month}月${day}日 現在`;
-  document.getElementById('current-date').textContent = dateString;
+  const currentDateEl = document.getElementById('current-date');
+  if (currentDateEl) {
+    currentDateEl.textContent = `${year}年${month}月${day}日 現在`;
+  }
+
+  const currentDateV2El = document.getElementById('current-date-v2');
+  if (currentDateV2El) {
+    currentDateV2El.textContent = `最終更新日: ${year}年 ${month}月${day}日`;
+  }
 </script>
 
-        <script>
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
-
-  const dateString = `最終更新日: ${year}年 ${month}月${day}日`;
-  document.getElementById('current-date-v2').textContent = dateString;
-</script>
 
 
 <script>
