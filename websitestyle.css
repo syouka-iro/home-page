@@ -1,0 +1,87 @@
+body {
+            background-color: #f7eedf;
+            color: #333333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        html.dark body {
+            background-color: #121110;
+            color: #f3f3f3;
+        }
+        
+        section, 
+        div[id] {
+            scroll-margin-top: 42px;
+        }
+        
+        .glass-nav {
+            background: rgba(247, 238, 223, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        html.dark .glass-nav {
+            background: rgba(20, 18, 16, 0.85);
+            border-color: rgba(230, 107, 35, 0.2);
+        }
+
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .orange-gradient-text {
+            background: linear-gradient(135deg, #e66b23 0%, #ffaa71 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .orange-gradient-bg {
+            background: linear-gradient(135deg, #e66b23 0%, #ffaa71 100%);
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(255, 170, 113, 0.35) 0%, rgba(247, 238, 223, 0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        html.dark .hero-glow {
+            background: radial-gradient(circle, rgba(230, 107, 35, 0.25) 0%, rgba(18, 17, 16, 0) 70%);
+        }
+
+        html.dark .theme-card {
+            background-color: #1c1a17 !important;
+            border-color: rgba(230, 107, 35, 0.15) !important;
+            color: #f3f3f3 !important;
+        }
+
+        html.dark .theme-card-sub {
+            background-color: #26231f !important;
+            border-color: rgba(230, 107, 35, 0.2) !important;
+        }
+
+        html.dark .theme-text-dark {
+            color: #ffffff !important;
+        }
+
+        html.dark .theme-text-muted {
+            color: #a3a09b !important;
+        }
+
+        html.dark .theme-footer {
+            background-color: #171513 !important;
+            border-color: rgba(230, 107, 35, 0.15) !important;
+        }
